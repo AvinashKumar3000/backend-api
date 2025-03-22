@@ -10,15 +10,21 @@ function roleAuth(req,res,next) {
             return;
         }
     }
+    req.body;
     next();
 }
 
-userRouter.use(roleAuth);
+function myIntermediator(req,res,next) {
+    console.log("My intermediator....", req.name);
+    next();
+}
 
+userRouter.use(roleAuth, myIntermediator);
 
-userRouter.post('/create', (req, res) => {
-    res.json({ message: "User created successfully", userId: "123" });
+userRouter.post('/create/:name/:id', (req, res, next) => {
+    console.log(req.query);
+    const msg = `the values are: ${req.params.name} ${req.params.id}`;
+    res.json({ message: msg, userId: "123" });
 });
-
 
 module.exports = userRouter;
